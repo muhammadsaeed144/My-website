@@ -5,7 +5,7 @@ import Link from "next/link"
 import { MagneticButton } from "@/components/magnetic-button"
 import { RevealText } from "@/components/reveal-text"
 import { SplitText } from "@/components/split-text"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, Play } from "lucide-react"
 
 export default function Hero() {
   const [isLoaded, setIsLoaded] = useState(false)
@@ -15,8 +15,8 @@ export default function Hero() {
   }, [])
 
   return (
-    <section className="relative min-h-screen flex items-start md:items-center">
-      {/* Hero image */}
+    <section id="hero" className="relative min-h-screen flex items-end md:items-center overflow-hidden">
+      {/* Hero background image */}
       <div
         className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ${
           isLoaded ? "opacity-100" : "opacity-0"
@@ -28,57 +28,80 @@ export default function Hero() {
         }}
       />
 
-      {/* Content */}
-      <div className="container relative z-20 px-4 md:px-6">
+      {/* Netflix-style gradient overlays */}
+      {/* Bottom-to-top dark fade (content area) */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#141414] via-[#141414]/60 to-transparent" />
+      {/* Left-to-right dark fade */}
+      <div className="absolute inset-0 bg-gradient-to-r from-[#141414]/80 via-[#141414]/30 to-transparent" />
+
+      {/* Content — pinned to bottom-left like Netflix */}
+      <div className="container relative z-20 px-4 md:px-6 pb-20 md:pb-0">
         <div
-          className={`max-w-2xl transition-all duration-1000 mt-[55vh] sm:mt-[40vh] md:mt-0 ${
+          className={`max-w-2xl transition-all duration-1000 ${
             isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           }`}
         >
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-[#FFFAEC] mb-6 leading-tight">
-            <RevealText 
-              text="I'm a creative mind," 
-              className="inline-block whitespace-nowrap" 
-              as="span" 
-              delay={0.5} 
+          {/* Category label */}
+          <div className="mb-4 flex items-center gap-2">
+            <span className="text-[#E50914] font-bold text-xs uppercase tracking-[0.2em]">
+              Creative Director
+            </span>
+            <span className="text-[#b3b3b3] text-xs">•</span>
+            <span className="text-[#b3b3b3] text-xs uppercase tracking-wider">Alexandria, Egypt</span>
+          </div>
+
+          {/* Main heading */}
+          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight text-white mb-4 leading-[1.0]">
+            <RevealText
+              text="I'm a creative mind,"
+              className="inline-block whitespace-nowrap"
+              as="span"
+              delay={0.5}
             />
-            <span className="block mt-2 text-hero">
-              <SplitText animation="slide">tell,visualize,execute stories</SplitText>
+            <span className="block mt-1 text-[#E50914]">
+              <SplitText animation="slide">tell, visualize,</SplitText>
+            </span>
+            <span className="block text-white/90">
+              <SplitText animation="slide">execute stories</SplitText>
             </span>
           </h1>
 
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-[#FFFAEC]/90 mb-8 sm:mb-10">
-            Find inspiration&share your vision
+          {/* Subtitle */}
+          <p className="text-base sm:text-lg text-[#b3b3b3] mb-8 sm:mb-10 max-w-lg">
+            Find inspiration & share your vision — 4+ years, 30+ projects, 15+ happy clients
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
-            <MagneticButton 
-              asChild 
-              size="lg" 
-              className="w-full sm:w-auto bg-hero hover:bg-hero/90 text-[#FFFAEC] group" 
+          {/* CTA Buttons — Netflix style */}
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+            <MagneticButton
+              asChild
+              size="lg"
+              className="w-full sm:w-auto bg-[#E50914] hover:bg-[#f40612] text-white font-bold text-base px-8 group transition-all duration-200"
               strength={40}
             >
-              <Link href="/#portfolio" className="flex items-center justify-center">
+              <Link href="/#portfolio" className="flex items-center justify-center gap-2">
+                <Play className="w-5 h-5 fill-white" />
                 View My Work
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
             </MagneticButton>
 
             <MagneticButton
               asChild
               size="lg"
-              variant="outline"
-              className="w-full sm:w-auto border-2 border-[#FFFAEC] bg-black/30 text-[#FFFAEC] hover:bg-[#FFFAEC] hover:text-secondary transition-all duration-300 text-sm sm:text-base"
+              className="w-full sm:w-auto bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white font-semibold text-base px-8 border-0 transition-all duration-200"
               strength={40}
             >
-              <Link href="/#contact" className="flex items-center justify-center py-2 sm:py-3">
+              <Link href="/#contact" className="flex items-center justify-center gap-2">
                 Let's Connect
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>
             </MagneticButton>
           </div>
         </div>
       </div>
+
+      {/* Bottom fade into page */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#141414] to-transparent pointer-events-none" />
     </section>
   )
 }
-

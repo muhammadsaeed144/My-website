@@ -1,7 +1,8 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useRef } from "react"
 import { motion } from "framer-motion"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 
 interface Project {
   id: number
@@ -20,7 +21,7 @@ const projects: Project[] = [
     category: "Commercial",
     vimeoId: "896506468",
     vimeoHash: "ee959d2c0b",
-    description: "first Ad and camera operator in a commercial song",
+    description: "First Ad and camera operator in a commercial song",
   },
   {
     id: 2,
@@ -32,7 +33,7 @@ const projects: Project[] = [
   },
   {
     id: 3,
-    title: "Owl coffee Ad",
+    title: "Owl Coffee Ad",
     category: "Documentary",
     vimeoId: "733672862",
     vimeoHash: "c31bfb918c",
@@ -52,17 +53,15 @@ const projects: Project[] = [
     category: "Commercial",
     vimeoId: "1062051132",
     vimeoHash: "77247f5a99",
-    description:
-      "Created and directed the storyline for this environmental awareness song.",
+    description: "Created and directed the storyline for this environmental awareness song.",
   },
   {
     id: 6,
-    title: "Gammal Tech short Documentary",
+    title: "Gammal Tech Short Documentary",
     category: "Documentary",
     vimeoId: "1062055541",
     vimeoHash: "3910731b5f",
-    description:
-      "A deep dive into one of the most important tech educational companies in MENA.",
+    description: "A deep dive into one of the most important tech educational companies in MENA.",
   },
   {
     id: 7,
@@ -70,8 +69,7 @@ const projects: Project[] = [
     category: "Series",
     vimeoId: "1062079476",
     vimeoHash: "cb033e182b",
-    description:
-      "Educational series delivering insights for aspiring creatives.",
+    description: "Educational series delivering insights for aspiring creatives.",
   },
   {
     id: 8,
@@ -88,9 +86,6 @@ const projects: Project[] = [
     youtubeId: "iXLor_CbJqk",
     description: "Professional video production and editing showcase.",
   },
-
-  // NEW PROJECTS
-
   {
     id: 10,
     title: "Abbott X Kuwait Blood Bank",
@@ -124,109 +119,148 @@ const projects: Project[] = [
   },
 ]
 
-export default function Portfolio() {
-  const [activeCategory, setActiveCategory] = useState("all")
-  const [isVisible, setIsVisible] = useState(false)
+const CATEGORY_ORDER = ["Commercial", "Documentary", "Series", "Interview"]
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVisible(true)
-          }
-        })
-      },
-      { threshold: 0.1 }
-    )
+function VideoCard({ project }: { project: Project }) {
+  // YouTube and Vimeo need different allow policies
+  const embedSrc = project.youtubeId
+    ? `https://www.youtube.com/embed/${project.youtubeId}?rel=0`
+    : `https://player.vimeo.com/video/${project.vimeoId}?h=${project.vimeoHash}&title=0&byline=0`
 
-    const section = document.getElementById("portfolio")
-    if (section) observer.observe(section)
-
-    return () => {
-      if (section) observer.unobserve(section)
-    }
-  }, [])
-
-  const filteredProjects =
-    activeCategory === "all"
-      ? projects
-      : projects.filter((p) => p.category === activeCategory)
-
-  const categories = [
-    "all",
-    ...new Set(projects.map((project) => project.category)),
-  ]
+  const allowPolicy = project.youtubeId
+    ? "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    : "autoplay; fullscreen; picture-in-picture"
 
   return (
-    <section id="portfolio" className="py-20 bg-background">
+    // Use whileHover directly on motion.div — avoids CSS transform conflict
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "0px 0px -40px 0px" }}
+      whileHover={{ scale: 1.04, zIndex: 10 }}
+      transition={{ duration: 0.35, ease: "easeOut" }}
+      className="flex-shrink-0 w-[280px] sm:w-[320px] rounded-sm overflow-hidden bg-[#1f1f1f] border border-[#2f2f2f] hover:border-[#E50914]/60 cursor-pointer relative"
+      style={{ transformOrigin: "center center" }}
+    >
+      {/* Video embed */}
+      <div className="relative aspect-video bg-[#0a0a0a]">
+        <iframe
+          src={embedSrc}
+          className="absolute inset-0 w-full h-full"
+          allow={allowPolicy}
+          allowFullScreen
+          loading="lazy"
+          title={project.title}
+        />
+      </div>
+
+      {/* Info bar */}
+      <div className="p-4">
+        <h3 className="text-sm font-bold text-white truncate">
+          {project.title}
+        </h3>
+        <p className="text-[#b3b3b3] text-xs mt-1 line-clamp-2 leading-relaxed">
+          {project.description}
+        </p>
+      </div>
+    </motion.div>
+  )
+}
+
+function NetflixRow({ category, items }: { category: string; items: Project[] }) {
+  const rowRef = useRef<HTMLDivElement>(null)
+
+  const scroll = (direction: "left" | "right") => {
+    if (!rowRef.current) return
+    rowRef.current.scrollBy({
+      left: direction === "right" ? 660 : -660,
+      behavior: "smooth",
+    })
+  }
+
+  return (
+    <div className="mb-14">
+      {/* Row header */}
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-3">
+          <div className="w-1 h-6 bg-[#E50914] rounded-full flex-shrink-0" />
+          <h3 className="text-lg md:text-xl font-bold text-white uppercase tracking-wide">
+            {category}
+          </h3>
+          <span className="text-[#b3b3b3] text-sm">({items.length})</span>
+        </div>
+
+        <div className="flex gap-2">
+          <button
+            onClick={() => scroll("left")}
+            className="p-1.5 rounded-full bg-[#2f2f2f] hover:bg-[#E50914] text-white transition-colors duration-200"
+            aria-label={`Scroll ${category} left`}
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+          <button
+            onClick={() => scroll("right")}
+            className="p-1.5 rounded-full bg-[#2f2f2f] hover:bg-[#E50914] text-white transition-colors duration-200"
+            aria-label={`Scroll ${category} right`}
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+
+      {/* Scrollable row — hide scrollbar cross-browser */}
+      <div
+        ref={rowRef}
+        className="flex gap-3 overflow-x-auto pb-3"
+        style={{
+          scrollBehavior: "smooth",
+          msOverflowStyle: "none",
+          scrollbarWidth: "none",
+        }}
+      >
+        {items.map((project) => (
+          <VideoCard key={project.id} project={project} />
+        ))}
+      </div>
+    </div>
+  )
+}
+
+export default function Portfolio() {
+  // Group projects by category in defined order
+  const grouped = CATEGORY_ORDER.reduce<Record<string, Project[]>>((acc, cat) => {
+    const items = projects.filter((p) => p.category === cat)
+    if (items.length > 0) acc[cat] = items
+    return acc
+  }, {})
+
+  return (
+    <section id="portfolio" className="py-24 bg-[#141414]">
       <div className="container px-4 md:px-6 mx-auto">
-        <div className="text-center mb-16">
-          <div className="mb-2 inline-block py-1 px-3 bg-primary/10 rounded-full">
-            <span className="text-sm font-medium text-primary">Portfolio</span>
+        {/* Section header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="mb-12"
+        >
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-8 h-[3px] bg-[#E50914]" />
+            <span className="text-[#E50914] text-sm font-bold uppercase tracking-[0.2em]">Portfolio</span>
           </div>
-
-          <h2 className="text-3xl font-bold mb-4">
-            Featured <span className="text-primary">Projects</span>
+          <h2 className="text-3xl md:text-4xl font-black text-white">
+            Featured <span className="text-[#E50914]">Work</span>
           </h2>
-
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            A selection of my best video editing and production work
+          <p className="text-[#b3b3b3] mt-3 max-w-2xl">
+            A curated collection of video production, direction, and storytelling projects.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="flex flex-wrap justify-center gap-3 mb-10">
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setActiveCategory(category)}
-              className={`px-4 py-2 rounded-full capitalize ${
-                activeCategory === category
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-primary/10 hover:bg-primary/20"
-              }`}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProjects.map((project) => (
-            <motion.div
-              key={project.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={isVisible ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: project.id * 0.05 }}
-              className="bg-card rounded-xl overflow-hidden shadow-lg"
-            >
-              <div className="relative aspect-video">
-                {project.youtubeId ? (
-                  <iframe
-                    src={`https://www.youtube.com/embed/${project.youtubeId}`}
-                    className="absolute w-full h-full"
-                    allow="autoplay; encrypted-media"
-                    loading="lazy"
-                  />
-                ) : (
-                  <iframe
-                    src={`https://player.vimeo.com/video/${project.vimeoId}?h=${project.vimeoHash}`}
-                    className="absolute w-full h-full"
-                    allow="autoplay; fullscreen"
-                    loading="lazy"
-                  />
-                )}
-              </div>
-
-              <div className="p-6">
-                <h3 className="text-xl font-bold mb-2">{project.title}</h3>
-                <p className="text-muted-foreground text-sm">
-                  {project.description}
-                </p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        {/* Netflix rows per category */}
+        {Object.entries(grouped).map(([category, items]) => (
+          <NetflixRow key={category} category={category} items={items} />
+        ))}
       </div>
     </section>
   )

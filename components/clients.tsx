@@ -62,38 +62,41 @@ const clients: Client[] = [
 
 export default function Clients() {
   return (
-    <section id="clients" className="py-20 bg-background">
+    <section id="clients" className="py-24 bg-[#0a0a0a]">
       <div className="container px-4 md:px-6 mx-auto">
-        <div className="text-center mb-16">
-          <div className="mb-2 inline-block py-1 px-3 bg-primary/10 rounded-full">
-            <span className="text-sm font-medium text-primary">
-              Collaborations
-            </span>
+        {/* Section header */}
+        <div className="mb-12">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-8 h-[3px] bg-[#E50914]" />
+            <span className="text-[#E50914] text-sm font-bold uppercase tracking-[0.2em]">Collaborations</span>
           </div>
-          <h2 className="text-3xl font-bold mb-4">
-            Trusted <span className="text-primary">Partners</span>
+          <h2 className="text-3xl md:text-4xl font-black text-white">
+            Trusted <span className="text-[#E50914]">Partners</span>
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-[#b3b3b3] mt-3 max-w-2xl">
             Proud to have collaborated with these amazing brands and organizations.
           </p>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
           {clients.map((client, index) => (
             <div
               key={client.name}
-              className="relative bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-all duration-300 group"
+              className="relative bg-[#1a1a1a] border border-[#2f2f2f] rounded-sm p-5 hover:border-[#E50914]/50 hover:bg-[#222] transition-all duration-300 group"
             >
               <div className="aspect-[2/1] relative flex items-center justify-center">
                 <Image
                   src={client.logo}
                   alt={client.name}
                   fill
-                  className="object-contain p-2 transition-transform duration-300 group-hover:scale-110"
+                  className="object-contain p-2 transition-all duration-300 group-hover:scale-110 brightness-75 group-hover:brightness-100 grayscale group-hover:grayscale-0"
                   sizes="(max-width: 640px) 150px, 200px"
-                  priority={index < 4} // Load first 4 images immediately
+                  priority={index < 4}
                 />
               </div>
+              <p className="text-center text-[#b3b3b3] text-xs mt-3 font-medium group-hover:text-white transition-colors duration-200">
+                {client.name}
+              </p>
             </div>
           ))}
         </div>
@@ -101,4 +104,3 @@ export default function Clients() {
     </section>
   )
 }
-

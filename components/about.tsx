@@ -49,79 +49,79 @@ export default function About() {
   }, [])
 
   return (
-    <section id="about" className="py-20 bg-[#FFFAEC]">
+    <section id="about" className="py-24 bg-[#141414]">
       <div className="container px-4 md:px-6">
         <div className="flex flex-col md:flex-row gap-12 items-center">
+          {/* Image column */}
           <div className="md:w-1/2 relative px-6 sm:px-0 mb-8 md:mb-0">
-            <div className="relative overflow-hidden rounded-lg shadow-xl">
+            <div className="relative overflow-hidden rounded-sm shadow-2xl group">
+              {/* Red border glow */}
+              <div className="absolute inset-0 rounded-sm ring-1 ring-[#E50914]/30 z-10 pointer-events-none" />
               <Image
                 src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/website%202.jpg-qsw73q3cIyt6HqX22fzyRzZPWUo8Tw.jpeg"
                 alt="Saeed"
                 width={600}
                 height={800}
-                className="w-full h-auto object-cover transition-transform duration-700 hover:scale-105"
+                className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
               />
+              {/* Bottom gradient overlay on image */}
+              <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-[#141414]/80 to-transparent" />
             </div>
           </div>
 
+          {/* Text column */}
           <div className="md:w-1/2">
-            <div className="mt-8 md:mt-12">
-              <div className="mb-4 inline-block py-1 px-3 bg-[#578E7E]/10 rounded-full">
-                <span className="text-sm font-medium text-[#578E7E]">About Me</span>
+            <div className="mt-8 md:mt-0">
+              {/* Section label */}
+              <div className="mb-4 flex items-center gap-3">
+                <div className="w-8 h-[3px] bg-[#E50914]" />
+                <span className="text-[#E50914] text-sm font-bold uppercase tracking-[0.2em]">About Me</span>
               </div>
 
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8 text-[#3D3D3D]">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-8 text-white leading-tight">
                 <SplitText type="words" animation="slide">
                   Storyteller & Creative Director
                 </SplitText>
               </h2>
 
-              <div className="space-y-8 text-[#3D3D3D]">
-                <p className="text-base sm:text-lg md:text-xl leading-relaxed reveal-on-scroll" data-delay="0.2">
-                  
+              <div className="space-y-6 text-[#b3b3b3]">
+                <p className="text-base sm:text-lg leading-relaxed">
                   When it comes to the intersection of storytelling, creativity, and digital strategy, I bring a unique
                   perspective. With a background spanning creative copywriting, content direction, social media strategy,
                   and filmmaking, I bring ideas to life through compelling ad campaigns, impactful brand storytelling, and
                   engaging digital content.
                 </p>
 
-                <p
-                  className="text-lg md:text-xl lg:text-2xl font-medium text-[#578E7E] reveal-on-scroll"
-                  data-delay="0.3"
-                >
-                  I simply Write, Visualize and bring thoughts to life.
+                <p className="text-lg md:text-xl font-semibold text-white">
+                  I simply <span className="text-[#E50914]">Write</span>,{" "}
+                  <span className="text-[#E50914]">Visualize</span> and bring thoughts to life.
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8 sm:mt-12">
-                <div className="bg-[#F5ECD5] p-6 rounded-lg shadow-md transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-                  <h3 className="font-bold text-[#3D3D3D] text-base md:text-lg mb-1">Experience</h3>
-                  <p className="text-[#578E7E] text-xl md:text-2xl font-bold">
-                    <span className="counter-value" data-target="4">
-                     4
-                    </span>
-                    + Years
+              {/* Stats */}
+              <div ref={statsRef} className="grid grid-cols-3 gap-4 mt-10">
+                <div className="bg-[#1f1f1f] border border-[#2f2f2f] p-5 rounded-sm hover:border-[#E50914]/50 transition-colors duration-300">
+                  <p className="text-[#E50914] text-3xl md:text-4xl font-black">
+                    <span className="counter-value" data-target="4">4</span>
+                    <span className="text-lg">+</span>
                   </p>
+                  <p className="text-[#b3b3b3] text-sm mt-1 font-medium">Years Exp.</p>
                 </div>
 
-                <div className="bg-[#F5ECD5] p-6 rounded-lg shadow-md transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-                  <h3 className="font-bold text-[#3D3D3D] text-base md:text-lg mb-1">Projects</h3>
-                  <p className="text-[#578E7E] text-xl md:text-2xl font-bold">
-                    <span className="counter-value" data-target="30">
-                      30
-                    </span>
-                    + Completed
+                <div className="bg-[#1f1f1f] border border-[#2f2f2f] p-5 rounded-sm hover:border-[#E50914]/50 transition-colors duration-300">
+                  <p className="text-[#E50914] text-3xl md:text-4xl font-black">
+                    <span className="counter-value" data-target="30">30</span>
+                    <span className="text-lg">+</span>
                   </p>
+                  <p className="text-[#b3b3b3] text-sm mt-1 font-medium">Projects</p>
                 </div>
 
-                <div className="bg-[#F5ECD5] p-6 rounded-lg shadow-md transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg col-span-1 sm:col-span-2">
-                  <h3 className="font-bold text-[#3D3D3D] text-base md:text-lg mb-1">Clients</h3>
-                  <p className="text-[#578E7E] text-xl md:text-2xl font-bold">
-                    <span className="counter-value" data-target="15">
-                      15
-                    </span>
-                    + Happy Clients
+                <div className="bg-[#1f1f1f] border border-[#2f2f2f] p-5 rounded-sm hover:border-[#E50914]/50 transition-colors duration-300">
+                  <p className="text-[#E50914] text-3xl md:text-4xl font-black">
+                    <span className="counter-value" data-target="15">15</span>
+                    <span className="text-lg">+</span>
                   </p>
+                  <p className="text-[#b3b3b3] text-sm mt-1 font-medium">Clients</p>
                 </div>
               </div>
             </div>
@@ -131,4 +131,3 @@ export default function About() {
     </section>
   )
 }
-
