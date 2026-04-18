@@ -19,29 +19,47 @@ module.exports = {
     extend: {
       fontFamily: {
         courier: ["var(--font-courier)"],
+        sans: ["var(--font-inter)", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "#FFFAEC",
-        foreground: "#3D3D3D",
+        background: "#141414",
+        foreground: "#ffffff",
+        card: {
+          DEFAULT: "#1f1f1f",
+          foreground: "#ffffff",
+        },
+        popover: {
+          DEFAULT: "#1f1f1f",
+          foreground: "#ffffff",
+        },
         primary: {
-          DEFAULT: "#578E7E",
-          foreground: "#FFFAEC",
+          DEFAULT: "#E50914",
+          foreground: "#ffffff",
         },
         secondary: {
-          DEFAULT: "#3D3D3D",
-          foreground: "#FFFAEC",
+          DEFAULT: "#2f2f2f",
+          foreground: "#ffffff",
+        },
+        muted: {
+          DEFAULT: "#2f2f2f",
+          foreground: "#b3b3b3",
         },
         accent: {
-          DEFAULT: "#F5ECD5",
-          foreground: "#3D3D3D",
+          DEFAULT: "#E50914",
+          foreground: "#ffffff",
         },
         hero: {
-          DEFAULT: "#A27B5C",
-          foreground: "#FFFAEC",
+          DEFAULT: "#E50914",
+          foreground: "#ffffff",
         },
+        destructive: {
+          DEFAULT: "#E50914",
+          foreground: "#ffffff",
+        },
+        light: "#e5e5e5",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -116,4 +134,3 @@ module.exports = {
   },
   plugins: [require("tailwindcss-animate")],
 }
-
